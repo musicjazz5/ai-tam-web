@@ -6,17 +6,19 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "preview": "opennextjs-cloudflare build && wrangler dev",
+    "deploy": "opennextjs-cloudflare build && wrangler deploy"
   },
   "dependencies": {
-    "next": "15.3.3",
+    "next": "^15.5.18",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
-    "@cloudflare/next-on-pages": "^1.13.12",
+    "@opennextjs/cloudflare": "^1.19.11",
+    "esbuild": "^0.28.1",
     "eslint": "^9",
-    "eslint-config-next": "15.3.3",
-    "vercel": "^44"
+    "eslint-config-next": "^15",
+    "wrangler": "^4"
   }
 }
