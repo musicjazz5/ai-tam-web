@@ -3,77 +3,112 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
-const SIGNAL_COLORS = {
-  bullish:   { bg: '#052e16', border: '#16a34a', text: '#4ade80', badge: '#16a34a' },
-  caution:   { bg: '#1c1917', border: '#d97706', text: '#fbbf24', badge: '#d97706' },
-  hold:      { bg: '#0f172a', border: '#3b82f6', text: '#93c5fd', badge: '#3b82f6' },
-  neutral:   { bg: '#0f172a', border: '#475569', text: '#94a3b8', badge: '#475569' },
-  watchlist: { bg: '#1e1b4b', border: '#7c3aed', text: '#c4b5fd', badge: '#7c3aed' },
+const CATEGORY_ICONS = {
+  'AI Compute': '⚡', 'Memory': '🧠', 'Semis': '🔬', 'Networking': '🌐',
+  'Photonics': '💡', 'AI Systems': '🖥️', 'AI Cloud': '☁️',
+  'Infrastructure': '🏗️', 'Power': '⚡', 'AI Software': '💻',
+  'Drones': '🚁', 'Space / Satellite / Defense': '🛸', 'Quantum': '⚛️',
+  'Robotics': '🤖', 'Nuclear': '☢️', 'Fintech': '💰',
+  'Hyperscalers': '🌍', 'Foundry': '🏭', 'Semi Equipment': '🔧',
+  'EDA / Design': '📐', 'Cybersecurity': '🔒', 'Data / Observability': '📊',
+  'Crypto / Miners': '₿', 'eVTOL / Air Mobility': '✈️', 'Defense': '🛡️',
 };
 
 function pct(v) {
-  if (v == null) return '—';
+  if (v == null) return null;
   return `${v >= 0 ? '+' : ''}${Number(v).toFixed(1)}%`;
 }
 
-function ThemeCard({ theme }) {
+function TickerChip({ t }) {
+  const chg = t.regular_change_pct ?? t.change_pct;
+  const chgStr = pct(chg);
+  const color = chg == null ? '#64748b' : chg >= 0 ? '#4ade80' : '#f87171';
+  return (
+    <span style={{ background: '#1e293b', borderRadius: 5, padding: '3px 7px', fontSize: 11.5, display: 'inline-flex', alignItems: 'center', gap: 5 }}>
+      <span style={{ color: '#e2e8f0', fontWeight: 700 }}>{t.symbol}</span>
+      {chgStr && <span style={{ color, fontSize: 10.5 }}>{chgStr}</span>}
+    </span>
+  );
+}
+
+function CategoryCard({ cat }) {
   const [open, setOpen] = useState(false);
-  const tickers = theme.tickers || [];
-  const preview = tickers.slice(0, open ? tickers.length : 4);
-  const c = SIGNAL_COLORS[theme.signal] || SIGNAL_COLORS.neutral;
+  const icon = CATEGORY_ICONS[cat.name] || '◈';
+  const tickers = cat.tickers || [];
+  const shown = open ? tickers : tickers.slice(0, 6);
 
   return (
-    <div style={{ background: c.bg, border: `1.5px solid ${c.border}30`, borderRadius: 12, padding: '16px 18px' }}>
-      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 10 }}>
-        <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
-            <span style={{ fontSize: 16 }}>{theme.icon || '◈'}</span>
-            <span style={{ color: '#f1f5f9', fontWeight: 800, fontSize: 14 }}>{theme.label}</span>
-            <span style={{ background: c.badge + '25', color: c.text, fontSize: 10.5, fontWeight: 700, padding: '2px 7px', borderRadius: 4 }}>{theme.signal}</span>
-          </div>
-          {theme.thesis && <div style={{ color: '#64748b', fontSize: 11.5, lineHeight: 1.5 }}>{theme.thesis}</div>}
-        </div>
-        {theme.score != null && (
-          <div style={{ background: c.border + '20', borderRadius: 8, padding: '6px 10px', textAlign: 'center', flexShrink: 0 }}>
-            <div style={{ color: c.text, fontSize: 18, fontWeight: 900, lineHeight: 1 }}>{theme.score}</div>
-            <div style={{ color: c.text + '80', fontSize: 10 }}>score</div>
-          </div>
-        )}
+    <div style={{ background: '#0f172a', border: '1px solid #1e293b', borderRadius: 10, padding: '14px 16px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 10 }}>
+        <span style={{ fontSize: 15 }}>{icon}</span>
+        <span style={{ color: '#f1f5f9', fontWeight: 700, fontSize: 13 }}>{cat.name}</span>
+        <span style={{ color: '#475569', fontSize: 10.5, marginLeft: 'auto' }}>{tickers.length}</span>
       </div>
-
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5, marginBottom: 8 }}>
-        {preview.map(t => (
-          <span key={t.symbol} style={{ background: '#1e293b', borderRadius: 5, padding: '4px 8px', fontSize: 11.5, display: 'inline-flex', alignItems: 'center', gap: 5 }}>
-            <span style={{ color: '#e2e8f0', fontWeight: 700 }}>{t.display_symbol || t.symbol}</span>
-            {t.rel_5d_vs_qqq_pct != null && (
-              <span style={{ color: t.rel_5d_vs_qqq_pct >= 0 ? '#4ade80' : '#f87171', fontSize: 10.5 }}>
-                {pct(t.rel_5d_vs_qqq_pct)}
-              </span>
-            )}
-          </span>
-        ))}
-        {tickers.length > 4 && (
-          <button onClick={() => setOpen(o => !o)} style={{ background: 'transparent', border: '1px solid #334155', borderRadius: 5, padding: '4px 8px', fontSize: 11, color: '#64748b', cursor: 'pointer' }}>
-            {open ? '收起' : `+${tickers.length - 4} 更多`}
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+        {shown.map(t => <TickerChip key={t.symbol} t={t} />)}
+        {tickers.length > 6 && (
+          <button onClick={() => setOpen(o => !o)} style={{ background: 'transparent', border: '1px solid #334155', borderRadius: 5, padding: '3px 7px', fontSize: 10.5, color: '#64748b', cursor: 'pointer' }}>
+            {open ? '收起' : `+${tickers.length - 6}`}
           </button>
         )}
       </div>
+    </div>
+  );
+}
 
-      {(theme.catalysts || []).length > 0 && (
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
-          {theme.catalysts.map(c2 => (
-            <span key={c2} style={{ background: '#1e293b', borderRadius: 4, fontSize: 10.5, color: '#475569', padding: '2px 6px' }}>{c2}</span>
-          ))}
-        </div>
+function SignalRow({ t }) {
+  const rel = t.rel_5d_vs_qqq_pct;
+  const score = t.thesis_score;
+  const relColor = rel == null ? '#64748b' : rel >= 0 ? '#4ade80' : '#f87171';
+  return (
+    <div style={{ background: '#0f172a', border: '1px solid #1e293b', borderRadius: 8, padding: '10px 14px', display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
+      <span style={{ color: '#f1f5f9', fontWeight: 800, fontSize: 13, minWidth: 52 }}>{t.symbol}</span>
+      {rel != null && (
+        <span style={{ color: relColor, fontWeight: 700, fontSize: 12 }}>5D vs QQQ {pct(rel)}</span>
+      )}
+      {score != null && (
+        <span style={{ background: '#1e293b', borderRadius: 4, padding: '2px 7px', color: '#a78bfa', fontSize: 11, fontWeight: 700 }}>Score {Math.round(score)}</span>
+      )}
+      <span style={{ background: '#052e16', color: '#4ade80', borderRadius: 4, padding: '2px 7px', fontSize: 11 }}>{t.action}</span>
+      {t.watch_reason && (
+        <span style={{ color: '#475569', fontSize: 11, flex: 1 }}>{t.watch_reason}</span>
       )}
     </div>
   );
 }
 
+function WatchRow({ t }) {
+  const chg = t.regular_change_pct ?? t.change_pct;
+  const chgColor = chg == null ? '#94a3b8' : chg >= 0 ? '#4ade80' : '#f87171';
+  const actionColor = t.action?.includes('做多') || t.action?.includes('追蹤') ? '#4ade80'
+    : t.action?.includes('避開') || t.action?.includes('放空') ? '#f87171' : '#fbbf24';
+  return (
+    <div style={{ background: '#0f172a', border: '1px solid #1e293b', borderRadius: 8, padding: '10px 14px', display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
+      <span style={{ color: '#f1f5f9', fontWeight: 800, fontSize: 13, minWidth: 52 }}>{t.symbol}</span>
+      {chg != null && <span style={{ color: chgColor, fontSize: 12, fontWeight: 700 }}>{pct(chg)}</span>}
+      {t.price != null && <span style={{ color: '#94a3b8', fontSize: 11 }}>${t.price.toFixed(2)}</span>}
+      <span style={{ color: actionColor, fontSize: 11, fontWeight: 700 }}>{t.action}</span>
+      {t.thesis_score != null && (
+        <span style={{ color: '#64748b', fontSize: 10.5 }}>Score {Math.round(t.thesis_score)}</span>
+      )}
+      {t.watch_reason && (
+        <span style={{ color: '#475569', fontSize: 11, flex: 1 }}>{t.watch_reason}</span>
+      )}
+    </div>
+  );
+}
+
+const TABS = [
+  { id: 'map',      label: '類股地圖',  en: 'AI Growth Map' },
+  { id: 'signal',   label: 'Early Signal', en: '族群轉折' },
+  { id: 'watch',    label: '追蹤名單',  en: 'Watchlist' },
+];
+
 export default function MapPage() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [tab, setTab] = useState('map');
   const [search, setSearch] = useState('');
 
   useEffect(() => {
@@ -83,15 +118,26 @@ export default function MapPage() {
       .catch(e => { setError(String(e)); setLoading(false); });
   }, []);
 
-  const themes = (data?.themes || []).filter(t => {
-    if (!search) return true;
-    const q = search.toLowerCase();
-    return (
-      t.label?.toLowerCase().includes(q) ||
-      t.thesis?.toLowerCase().includes(q) ||
-      (t.tickers || []).some(tk => (tk.display_symbol || tk.symbol || '').toLowerCase().includes(q))
-    );
-  });
+  const themes = data?.themes || [];
+  const mapTheme    = themes.find(t => t.id === 'aiGrowth');
+  const signalTheme = themes.find(t => t.id === 'earlySignal');
+  const watchTheme  = themes.find(t => t.id === 'aiTamWatchlist');
+
+  const q = search.toLowerCase();
+
+  const mapCats = (mapTheme?.categories || []).filter(c =>
+    !q || c.name.toLowerCase().includes(q) ||
+    (c.tickers || []).some(t => t.symbol?.toLowerCase().includes(q))
+  );
+
+  const signalTickers = (signalTheme?.categories || [])
+    .flatMap(c => (c.tickers || []).map(t => ({ ...t, _cat: c.name })))
+    .filter(t => !q || t.symbol?.toLowerCase().includes(q) || t._cat?.toLowerCase().includes(q))
+    .sort((a, b) => (b.rel_5d_vs_qqq_pct ?? -999) - (a.rel_5d_vs_qqq_pct ?? -999));
+
+  const watchTickers = (watchTheme?.categories || [])
+    .flatMap(c => (c.tickers || []).map(t => ({ ...t, _cat: c.name })))
+    .filter(t => !q || t.symbol?.toLowerCase().includes(q) || t.action?.toLowerCase().includes(q));
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
@@ -102,70 +148,108 @@ export default function MapPage() {
           <div style={{ width: 28, height: 28, background: 'linear-gradient(135deg,#6366f1,#a855f7)', borderRadius: 6, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 900, fontSize: 12, color: '#fff' }}>AI</div>
           <span style={{ fontWeight: 800, fontSize: 15, color: '#f1f5f9' }}>AI-TAM</span>
         </Link>
-        <div style={{ color: '#6366f1', fontWeight: 700, fontSize: 13 }}>AI & Growth 類股地圖</div>
+        <div style={{ color: '#6366f1', fontWeight: 700, fontSize: 13, display: 'none' }}>
+          {data?.generated_at && new Date(data.generated_at).toLocaleDateString('zh-TW')}
+        </div>
         {data?.generated_at && (
           <div style={{ color: '#475569', fontSize: 11 }}>更新 {new Date(data.generated_at).toLocaleDateString('zh-TW')}</div>
         )}
       </nav>
 
-      <main style={{ flex: 1, padding: '24px 20px', maxWidth: 1200, margin: '0 auto', width: '100%' }}>
+      <main style={{ flex: 1, padding: '20px', maxWidth: 1280, margin: '0 auto', width: '100%', boxSizing: 'border-box' }}>
 
-        {/* Header */}
-        <div style={{ marginBottom: 20 }}>
-          <h1 style={{ fontSize: 22, fontWeight: 900, color: '#f1f5f9', margin: '0 0 6px', letterSpacing: '-0.02em' }}>
-            AI & Growth 類股地圖
-          </h1>
-          <p style={{ color: '#64748b', fontSize: 13, margin: 0 }}>
-            依主題分類追蹤 AI 供應鏈動能 · 5D vs QQQ 相對強弱 · 即時訊號
-          </p>
+        {/* Tabs */}
+        <div style={{ display: 'flex', gap: 4, marginBottom: 20, borderBottom: '1px solid #1e293b', paddingBottom: 0 }}>
+          {TABS.map(t => (
+            <button key={t.id} onClick={() => setTab(t.id)} style={{
+              background: 'transparent', border: 'none', cursor: 'pointer',
+              padding: '10px 16px', fontSize: 13, fontWeight: tab === t.id ? 700 : 500,
+              color: tab === t.id ? '#a78bfa' : '#64748b',
+              borderBottom: tab === t.id ? '2px solid #a78bfa' : '2px solid transparent',
+              marginBottom: -1,
+            }}>
+              {t.label}
+              <span style={{ marginLeft: 5, fontSize: 10.5, color: '#475569' }}>{t.en}</span>
+            </button>
+          ))}
         </div>
 
         {/* Search */}
         <input
           value={search}
           onChange={e => setSearch(e.target.value)}
-          placeholder="搜尋主題或個股…"
-          style={{ width: '100%', maxWidth: 380, background: '#0f172a', border: '1px solid #1e293b', borderRadius: 8, padding: '9px 14px', color: '#e2e8f0', fontSize: 13, marginBottom: 20, outline: 'none', boxSizing: 'border-box' }}
+          placeholder="搜尋類別或個股…"
+          style={{ width: '100%', maxWidth: 340, background: '#0f172a', border: '1px solid #1e293b', borderRadius: 8, padding: '8px 14px', color: '#e2e8f0', fontSize: 13, marginBottom: 18, outline: 'none', boxSizing: 'border-box' }}
         />
 
+        {/* Loading / Error */}
         {loading && (
-          <div style={{ textAlign: 'center', color: '#475569', padding: '60px 0' }}>
-            <div style={{ fontSize: 28, marginBottom: 12 }}>⟳</div>
-            載入中…
-          </div>
+          <div style={{ textAlign: 'center', color: '#475569', padding: '60px 0', fontSize: 14 }}>載入中…</div>
         )}
-
         {error && (
           <div style={{ background: '#1c0a0a', border: '1px solid #7f1d1d', borderRadius: 10, padding: '16px 20px', color: '#fca5a5', fontSize: 13 }}>
-            資料載入失敗：{error}。請稍後重試或前往 <a href="https://ai-tam.org/market-scan?tab=aiGrowthMap" style={{ color: '#818cf8' }}>ai-tam.org</a>。
+            資料載入失敗：{error}。請稍後重試或前往 <a href="https://ai-tam.org/market-scan" style={{ color: '#818cf8' }}>ai-tam.org</a>。
           </div>
         )}
 
-        {!loading && !error && (
+        {/* ── Tab: AI Growth Map ── */}
+        {!loading && !error && tab === 'map' && (
           <>
-            {/* Stats bar */}
-            <div style={{ display: 'flex', gap: 16, marginBottom: 20, flexWrap: 'wrap' }}>
-              {[
-                { label: '主題數', val: themes.length },
-                { label: 'Bullish', val: themes.filter(t => t.signal === 'bullish').length, color: '#4ade80' },
-                { label: 'Caution', val: themes.filter(t => t.signal === 'caution').length, color: '#fbbf24' },
-                { label: 'Watchlist', val: themes.filter(t => t.signal === 'watchlist').length, color: '#c4b5fd' },
-              ].map(({ label, val, color }) => (
-                <div key={label} style={{ background: '#0f172a', border: '1px solid #1e293b', borderRadius: 8, padding: '8px 14px', textAlign: 'center' }}>
-                  <div style={{ color: color || '#94a3b8', fontSize: 18, fontWeight: 900 }}>{val}</div>
-                  <div style={{ color: '#475569', fontSize: 10.5 }}>{label}</div>
+            <div style={{ display: 'flex', gap: 12, marginBottom: 18, flexWrap: 'wrap', alignItems: 'center' }}>
+              <div style={{ color: '#64748b', fontSize: 12 }}>
+                {mapCats.length} 類股族群 · 資料每日更新
+              </div>
+            </div>
+            {mapCats.length === 0 && (
+              <div style={{ color: '#475569', padding: '30px 0', fontSize: 13 }}>沒有符合的類別</div>
+            )}
+            <div style={{ display: 'grid', gap: 10, gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))' }}>
+              {mapCats.map(c => <CategoryCard key={c.name} cat={c} />)}
+            </div>
+          </>
+        )}
+
+        {/* ── Tab: Early Signal ── */}
+        {!loading && !error && tab === 'signal' && (
+          <>
+            <div style={{ color: '#64748b', fontSize: 12, marginBottom: 14 }}>
+              {signalTickers.length} 個早期訊號 · 依 5D vs QQQ 排序
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+              {signalTickers.length === 0 && <div style={{ color: '#475569', fontSize: 13 }}>目前無早期訊號</div>}
+              {signalTickers.map((t, i) => (
+                <div key={`${t.symbol}-${i}`}>
+                  {(i === 0 || t._cat !== signalTickers[i - 1]._cat) && (
+                    <div style={{ color: '#475569', fontSize: 11, fontWeight: 700, marginTop: i > 0 ? 14 : 0, marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                      {t._cat}
+                    </div>
+                  )}
+                  <SignalRow t={t} />
                 </div>
               ))}
             </div>
+          </>
+        )}
 
-            {/* Themes grid */}
-            <div style={{ display: 'grid', gap: 12, gridTemplateColumns: 'repeat(auto-fill,minmax(320px,1fr))' }}>
-              {themes.map((t, i) => <ThemeCard key={t.label || i} theme={t} />)}
+        {/* ── Tab: Watchlist ── */}
+        {!loading && !error && tab === 'watch' && (
+          <>
+            <div style={{ color: '#64748b', fontSize: 12, marginBottom: 14 }}>
+              {watchTickers.length} 個追蹤個股 · AI-TAM 每日更新
             </div>
-
-            {themes.length === 0 && (
-              <div style={{ color: '#475569', textAlign: 'center', padding: '40px 0' }}>沒有符合的主題</div>
-            )}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+              {watchTickers.length === 0 && <div style={{ color: '#475569', fontSize: 13 }}>目前無追蹤標的</div>}
+              {watchTickers.map((t, i) => (
+                <div key={`${t.symbol}-${i}`}>
+                  {(i === 0 || t._cat !== watchTickers[i - 1]._cat) && (
+                    <div style={{ color: '#475569', fontSize: 11, fontWeight: 700, marginTop: i > 0 ? 14 : 0, marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                      {t._cat}
+                    </div>
+                  )}
+                  <WatchRow t={t} />
+                </div>
+              ))}
+            </div>
           </>
         )}
       </main>
