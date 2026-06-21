@@ -112,7 +112,7 @@ export default function MapPage() {
   const [search, setSearch] = useState('');
 
   useEffect(() => {
-    fetch('/api/map-data')
+    fetch('/data/theme_maps_latest.json')
       .then(r => r.ok ? r.json() : Promise.reject(r.status))
       .then(d => { setData(d); setLoading(false); })
       .catch(e => { setError(String(e)); setLoading(false); });
