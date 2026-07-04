@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-04T00:02:11.607Z",
+  "generated_at": "2026-07-04T13:45:00.224Z",
   "themes": [
     {
       "id": "aiTamWatchlist",
@@ -929,7 +929,7 @@
               "category_label": "沽空最多的股票",
               "thesis_score": 50,
               "beta_score": 85,
-              "watch_reason": "放空 / 避開 / 沽空最多的股票 / 1D -7.49% / Rev YoY +15.78% / Fwd PE 205.5x"
+              "watch_reason": "放空 / 避開 / 沽空最多的股票 / 1D -7.49% / Rev YoY +15.78% / Fwd PE 205.4x"
             },
             {
               "symbol": "FLEX",
@@ -4298,17 +4298,24 @@
       "source_url": "/market-scan/data/block_inflection_stocks_latest.html",
       "summary": {
         "symbols": 10,
-        "advancers": 5,
+        "advancers": 6,
         "decliners": 4,
         "sessions": {
-          "post": 10
-        }
+          "regular": 10
+        },
+        "buy_watch": [
+          "KLAC",
+          "AMAT",
+          "LRCX",
+          "MARA",
+          "ASML",
+          "HOOD"
+        ],
+        "short_or_avoid": []
       },
       "categories": [
         {
           "name": "Semiconductor equipment",
-          "report_ids": [],
-          "reports": [],
           "tickers": [
             {
               "symbol": "KLAC",
@@ -4326,15 +4333,15 @@
               "ret_5d_pct": 31.94,
               "thesis_score": 99.4,
               "beta_score": 29.63,
-              "exchange": null,
-              "change_pct": 1.04,
-              "price": 238,
-              "market_session": "post",
-              "regular_price": 235.55,
-              "regular_change_pct": -11.51,
-              "ext_session": "post",
-              "ext_price": 238,
-              "ext_change_pct": 1.04
+              "change_pct": 5.55,
+              "price": null,
+              "market_session": "regular",
+              "regular_price": null,
+              "regular_change_pct": 5.55,
+              "ext_session": null,
+              "ext_price": null,
+              "ext_change_pct": null,
+              "exchange": null
             },
             {
               "symbol": "AMAT",
@@ -4352,15 +4359,15 @@
               "ret_5d_pct": 25.22,
               "thesis_score": 75.8,
               "beta_score": 22.91,
-              "exchange": null,
-              "change_pct": 0.68,
-              "price": 607.14,
-              "market_session": "post",
-              "regular_price": 603.04,
-              "regular_change_pct": -7.35,
-              "ext_session": "post",
-              "ext_price": 607.14,
-              "ext_change_pct": 0.68
+              "change_pct": 2.64,
+              "price": null,
+              "market_session": "regular",
+              "regular_price": null,
+              "regular_change_pct": 2.64,
+              "ext_session": null,
+              "ext_price": null,
+              "ext_change_pct": null,
+              "exchange": null
             },
             {
               "symbol": "LRCX",
@@ -4378,15 +4385,15 @@
               "ret_5d_pct": 20.95,
               "thesis_score": 65.4,
               "beta_score": 18.64,
-              "exchange": null,
-              "change_pct": 0.74,
-              "price": 354,
-              "market_session": "post",
-              "regular_price": 351.41,
-              "regular_change_pct": -10.19,
-              "ext_session": "post",
-              "ext_price": 354,
-              "ext_change_pct": 0.74
+              "change_pct": 1.18,
+              "price": null,
+              "market_session": "regular",
+              "regular_price": null,
+              "regular_change_pct": 1.18,
+              "ext_session": null,
+              "ext_price": null,
+              "ext_change_pct": null,
+              "exchange": null
             },
             {
               "symbol": "ASML",
@@ -4404,15 +4411,15 @@
               "ret_5d_pct": 13.51,
               "thesis_score": 43.8,
               "beta_score": 11.2,
-              "exchange": null,
-              "change_pct": 0.43,
-              "price": 1776.98,
-              "market_session": "post",
-              "regular_price": 1769.32,
-              "regular_change_pct": -4,
-              "ext_session": "post",
-              "ext_price": 1776.98,
-              "ext_change_pct": 0.43
+              "change_pct": -1.89,
+              "price": null,
+              "market_session": "regular",
+              "regular_price": null,
+              "regular_change_pct": -1.89,
+              "ext_session": null,
+              "ext_price": null,
+              "ext_change_pct": null,
+              "exchange": null
             },
             {
               "symbol": "TER",
@@ -4430,22 +4437,20 @@
               "ret_5d_pct": 12.65,
               "thesis_score": 39.3,
               "beta_score": 10.34,
-              "exchange": null,
-              "change_pct": 1.67,
-              "price": 375.24,
-              "market_session": "post",
-              "regular_price": 369.09,
-              "regular_change_pct": -13.63,
-              "ext_session": "post",
-              "ext_price": 375.24,
-              "ext_change_pct": 1.67
+              "change_pct": 5.72,
+              "price": null,
+              "market_session": "regular",
+              "regular_price": null,
+              "regular_change_pct": 5.72,
+              "ext_session": null,
+              "ext_price": null,
+              "ext_change_pct": null,
+              "exchange": null
             }
           ]
         },
         {
           "name": "Crypto / blockchain",
-          "report_ids": [],
-          "reports": [],
           "tickers": [
             {
               "symbol": "MARA",
@@ -4463,15 +4468,15 @@
               "ret_5d_pct": 14.29,
               "thesis_score": 39.4,
               "beta_score": 11.98,
-              "exchange": null,
-              "change_pct": -0.08,
-              "price": 12.39,
-              "market_session": "post",
-              "regular_price": 12.4,
-              "regular_change_pct": -7.26,
-              "ext_session": "post",
-              "ext_price": 12.39,
-              "ext_change_pct": -0.08
+              "change_pct": 3.45,
+              "price": null,
+              "market_session": "regular",
+              "regular_price": null,
+              "regular_change_pct": 3.45,
+              "ext_session": null,
+              "ext_price": null,
+              "ext_change_pct": null,
+              "exchange": null
             },
             {
               "symbol": "HOOD",
@@ -4489,22 +4494,20 @@
               "ret_5d_pct": 13,
               "thesis_score": 41.3,
               "beta_score": 10.69,
-              "exchange": null,
-              "change_pct": -0.65,
-              "price": 112,
-              "market_session": "post",
-              "regular_price": 112.73,
-              "regular_change_pct": 3.76,
-              "ext_session": "post",
-              "ext_price": 112,
-              "ext_change_pct": -0.65
+              "change_pct": 1.04,
+              "price": null,
+              "market_session": "regular",
+              "regular_price": null,
+              "regular_change_pct": 1.04,
+              "ext_session": null,
+              "ext_price": null,
+              "ext_change_pct": null,
+              "exchange": null
             }
           ]
         },
         {
           "name": "Defense autonomy",
-          "report_ids": [],
-          "reports": [],
           "tickers": [
             {
               "symbol": "LMT",
@@ -4522,15 +4525,15 @@
               "ret_5d_pct": 3.16,
               "thesis_score": 9.6,
               "beta_score": 0.85,
-              "exchange": null,
-              "change_pct": -0.35,
-              "price": 544,
-              "market_session": "post",
-              "regular_price": 545.91,
-              "regular_change_pct": 4.62,
-              "ext_session": "post",
-              "ext_price": 544,
-              "ext_change_pct": -0.35
+              "change_pct": -1.52,
+              "price": null,
+              "market_session": "regular",
+              "regular_price": null,
+              "regular_change_pct": -1.52,
+              "ext_session": null,
+              "ext_price": null,
+              "ext_change_pct": null,
+              "exchange": null
             },
             {
               "symbol": "RTX",
@@ -4548,15 +4551,15 @@
               "ret_5d_pct": 1.4,
               "thesis_score": 8.6,
               "beta_score": -0.91,
-              "exchange": null,
-              "change_pct": 0,
-              "price": 199.26,
-              "market_session": "post",
-              "regular_price": 199.25,
-              "regular_change_pct": 3.9,
-              "ext_session": "post",
-              "ext_price": 199.26,
-              "ext_change_pct": 0
+              "change_pct": -0.37,
+              "price": null,
+              "market_session": "regular",
+              "regular_price": null,
+              "regular_change_pct": -0.37,
+              "ext_session": null,
+              "ext_price": null,
+              "ext_change_pct": null,
+              "exchange": null
             },
             {
               "symbol": "TDG",
@@ -4574,15 +4577,15 @@
               "ret_5d_pct": 1.4,
               "thesis_score": 8.3,
               "beta_score": -0.91,
-              "exchange": null,
-              "change_pct": -1.72,
-              "price": 1325.33,
-              "market_session": "post",
-              "regular_price": 1348.49,
-              "regular_change_pct": 3,
-              "ext_session": "post",
-              "ext_price": 1325.33,
-              "ext_change_pct": -1.72
+              "change_pct": -0.12,
+              "price": null,
+              "market_session": "regular",
+              "regular_price": null,
+              "regular_change_pct": -0.12,
+              "ext_session": null,
+              "ext_price": null,
+              "ext_change_pct": null,
+              "exchange": null
             }
           ]
         }
